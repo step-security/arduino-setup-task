@@ -1,0 +1,11 @@
+[tool.poetry]
+name = "setup-task"
+version = "0.0.0"
+description = "GitHub Actions action to install Task"
+authors = ["StepSecurity <info@stepsecurity.io>"]
+
+[tool.poetry.dependencies]
+python = "^3.9"
+
+[tool.poetry.dev-dependencies]
+codespell = "^2.4.2"

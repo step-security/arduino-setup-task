@@ -1,0 +1,52 @@
+name: Check TypeScript Configuration
+
+# See: https://docs.github.com/en/actions/reference/events-that-trigger-workflows
+on:
+  push:
+    paths:
+      - ".github/workflows/check-tsconfig-task.ya?ml"
+      - "**/tsconfig*.json"
+      - ".npmrc"
+      - "package.json"
+      - "package-lock.json"
+      - "Taskfile.ya?ml"
+  pull_request:
+    paths:
+      - ".github/workflows/check-tsconfig-task.ya?ml"
+      - "**/tsconfig*.json"
+      - ".npmrc"
+      - "package.json"
+      - "package-lock.json"
+      - "Taskfile.ya?ml"
+
+jobs:
+  validate:
+    runs-on: ubuntu-latest
+
+    strategy:
+      fail-fast: false
+
+      matrix:
+        file:
+          - ./tsconfig.json
+          - ./tsconfig.eslint.json
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v7
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v6
+        with:
+          node-version-file: package.json
+
+      - name: Install Task
+        uses: ./
+        with:
+          repo-token: ${{ secrets.GITHUB_TOKEN }}
+          version: 3.x
+
+      - name: Validate ${{ matrix.file }}
+        env:
+          TSCONFIG_PATH: ${{ matrix.file }}
+        run: task --silent ts:validate
