@@ -1,0 +1,7 @@
+[[IgnoredVulns]]
+id = "GHSA-8gh8-hqwg-xf34"
+reason = "dev-only dependency via ajv-cli, not present in production bundle"
+
+[[IgnoredVulns]]
+id = "GHSA-h67p-54hq-rp68"
+reason = "dev-only dependency via ajv-cli and @istanbuljs/load-nyc-config (jest chain), not present in production bundle"

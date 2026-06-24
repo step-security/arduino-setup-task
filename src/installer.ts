@@ -15,7 +15,6 @@ import * as path from "path";
 import * as util from "util";
 import * as crypto from "crypto";
 import * as fs from "fs";
-import * as restm from "typed-rest-client/RestClient";
 import * as semver from "semver";
 import axios from "axios";
 
@@ -33,21 +32,16 @@ interface ITaskRef {
 
 // Retrieve a list of versions scraping tags from the Github API
 async function fetchVersions(repoToken: string): Promise<string[]> {
-  let rest: restm.RestClient;
+  const headers: Record<string, string> = {};
   if (repoToken !== "") {
-    rest = new restm.RestClient("setup-task", "", [], {
-      headers: { Authorization: `Bearer ${repoToken}` },
-    });
-  } else {
-    rest = new restm.RestClient("setup-task");
+    headers.Authorization = `Bearer ${repoToken}`;
   }
 
-  const tags: ITaskRef[] =
-    (
-      await rest.get<ITaskRef[]>(
-        "https://api.github.com/repos/go-task/task/git/refs/tags",
-      )
-    ).result || [];
+  const response = await axios.get<ITaskRef[]>(
+    "https://api.github.com/repos/go-task/task/git/refs/tags",
+    { headers },
+  );
+  const tags: ITaskRef[] = response.data || [];
 
   return tags
     .filter((tag) => tag.ref.match(/v\d+\.[\w\.]+/g))
