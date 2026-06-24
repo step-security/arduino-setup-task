@@ -1,0 +1,15 @@
+name: "arduino-setup-task"
+description: "Download Task and add it to the PATH"
+author: "step-security"
+inputs:
+  version:
+    description: "Version to use. Example: 3.4.2"
+    required: true
+    default: "3.x"
+  repo-token:
+    description: "Token with permissions to do repo things"
+    required: false
+
+runs:
+  using: "node24"
+  main: "dist/index.js"

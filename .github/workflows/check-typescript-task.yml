@@ -1,0 +1,56 @@
+name: Check TypeScript
+
+# See: https://docs.github.com/en/actions/reference/events-that-trigger-workflows
+on:
+  push:
+    paths:
+      - ".github/workflows/check-typescript-task.ya?ml"
+      - ".eslintignore"
+      - "**/.eslintrc*"
+      - ".npmrc"
+      - "package.json"
+      - "package-lock.json"
+      - "Taskfile.ya?ml"
+      - "tsconfig.eslint.json"
+      - "tsconfig.json"
+      - "**.js"
+      - "**.jsx"
+      - "**.ts"
+      - "**.tsx"
+  pull_request:
+    paths:
+      - ".github/workflows/check-typescript-task.ya?ml"
+      - ".eslintignore"
+      - "**/.eslintrc*"
+      - ".npmrc"
+      - "package.json"
+      - "package-lock.json"
+      - "Taskfile.ya?ml"
+      - "tsconfig.eslint.json"
+      - "tsconfig.json"
+      - "**.js"
+      - "**.jsx"
+      - "**.ts"
+      - "**.tsx"
+
+jobs:
+  check:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v7
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v6
+        with:
+          node-version-file: package.json
+
+      - name: Install Task
+        uses: ./
+        with:
+          repo-token: ${{ secrets.GITHUB_TOKEN }}
+          version: 3.x
+
+      - name: Lint
+        run: task ts:lint

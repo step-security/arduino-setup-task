@@ -1,0 +1,42 @@
+name: Check Action Metadata
+
+# See: https://docs.github.com/en/actions/reference/events-that-trigger-workflows
+on:
+  push:
+    paths:
+      - ".github/workflows/check-action-metadata-task.ya?ml"
+      - ".npmrc"
+      - "action.ya?ml"
+      - "package.json"
+      - "package-lock.json"
+      - "Taskfile.ya?ml"
+  pull_request:
+    paths:
+      - ".github/workflows/check-action-metadata-task.ya?ml"
+      - ".npmrc"
+      - "action.ya?ml"
+      - "package.json"
+      - "package-lock.json"
+      - "Taskfile.ya?ml"
+
+jobs:
+  validate:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v7
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v6
+        with:
+          node-version-file: package.json
+
+      - name: Install Task
+        uses: ./
+        with:
+          repo-token: ${{ secrets.GITHUB_TOKEN }}
+          version: 3.x
+
+      - name: Validate action.yml
+        run: task --silent action:validate

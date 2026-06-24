@@ -1,0 +1,68 @@
+# Source: https://github.com/arduino/tooling-project-assets/blob/main/workflow-templates/check-npm-task.md
+name: Check npm
+
+# See: https://docs.github.com/en/actions/reference/events-that-trigger-workflows
+on:
+  push:
+    paths:
+      - ".github/workflows/check-npm-task.ya?ml"
+      - "**/.npmrc"
+      - "**/package.json"
+      - "**/package-lock.json"
+      - "Taskfile.ya?ml"
+  pull_request:
+    paths:
+      - ".github/workflows/check-npm-task.ya?ml"
+      - "**/.npmrc"
+      - "**/package.json"
+      - "**/package-lock.json"
+      - "Taskfile.ya?ml"
+
+permissions:
+  contents: read
+
+jobs:
+  validate:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v7
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v6
+        with:
+          node-version-file: package.json
+
+      - name: Install Task
+        uses: ./
+        with:
+          repo-token: ${{ secrets.GITHUB_TOKEN }}
+          version: 3.x
+
+      - name: Validate package.json
+        run: task --silent npm:validate
+
+  check-sync:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v7
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v6
+        with:
+          node-version-file: package.json
+
+      - name: Install Task
+        uses: ./
+        with:
+          repo-token: ${{ secrets.GITHUB_TOKEN }}
+          version: 3.x
+
+      - name: Install npm dependencies
+        run: task npm:install-deps
+
+      - name: Check package-lock.json
+        run: git diff --color --exit-code package-lock.json
