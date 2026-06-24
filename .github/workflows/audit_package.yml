@@ -18,7 +18,7 @@ on:
       script:
         description: "Script to build the action"
         required: false
-        default: "npx tsc && npx ncc build"
+        default: "npx tsc && npx ncc build lib/main.js -o dist"
   schedule:
     - cron: "0 0 * * 1"
 
@@ -29,7 +29,7 @@ jobs:
       force: ${{ inputs.force || false }}
       base_branch: ${{ inputs.base_branch || 'main' }}
       node_version: ${{ inputs.node_version || '24' }}
-      script: ${{ inputs.script || 'npx tsc && npx ncc build' }}
+      script: ${{ inputs.script || 'npx tsc && npx ncc build lib/main.js -o dist' }}
 
 permissions:
   contents: write
