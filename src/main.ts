@@ -13,7 +13,7 @@
 import * as core from "@actions/core";
 import fs from "fs";
 import axios, { isAxiosError } from "axios";
-import * as installer from "./installer";
+import * as installer from "./installer.js";
 
 async function validateSubscription() {
   const eventPath = process.env.GITHUB_EVENT_PATH;
