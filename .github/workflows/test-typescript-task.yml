@@ -5,7 +5,7 @@ on:
     paths:
       - ".github/workflows/test-typescript-task.ya?ml"
       - ".npmrc"
-      - "jest.config.js"
+      - "jest.config.ts"
       - "package.json"
       - "package-lock.json"
       - "Taskfile.ya?ml"
@@ -19,7 +19,7 @@ on:
     paths:
       - ".github/workflows/test-typescript-task.ya?ml"
       - ".npmrc"
-      - "jest.config.js"
+      - "jest.config.ts"
       - "package.json"
       - "package-lock.json"
       - "Taskfile.ya?ml"
